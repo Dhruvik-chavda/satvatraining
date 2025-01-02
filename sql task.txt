@@ -1,0 +1,317 @@
+Task
+
+mysql> create table customer(
+    -> custid varchar(30) primary key,
+    -> cname varchar(30),
+    -> address varchar(30),
+    -> contactno varchar(30),
+    -> pcode int
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into customer(custid,cname,address,contactno,pcode)
+    -> values(1,"abc","X",8984884898,101),
+    ->  (2,"ABC","Y",988990090,201),
+    -> (3,"xyz","Z",8899890098,301),
+    -> (4,"XYZ","C",9989800980,401),
+    -> (5,"C","xyz",9988990990,501);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update customer
+    -> set cname = "XYZ", contactno = 8899098998
+    -> where custid = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> update customer
+    -> set address = "x"
+    -> where contactno = 988990090;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 2      | ABC   | x       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select cname, address from customer
+    -> where pcode = 301;
++-------+---------+
+| cname | address |
++-------+---------+
+| xyz   | Z       |
++-------+---------+
+1 row in set (0.00 sec)
+
+
+mysql> select pcode, contactno from customer
+    -> where cname = "xyz";
++-------+------------+
+| pcode | contactno  |
++-------+------------+
+|   101 | 8899098998 |
+|   301 | 8899890098 |
+|   401 | 9989800980 |
++-------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname LIKE "a%";
++--------+-------+---------+-----------+-------+
+| custid | cname | address | contactno | pcode |
++--------+-------+---------+-----------+-------+
+| 2      | ABC   | x       | 988990090 |   201 |
++--------+-------+---------+-----------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname LIKE "%z%";
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname LIKE "xy_%";
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname LIKE "xyz" OR address LIKE "x%";
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 2      | ABC   | x       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname LIKE "xyz" OR address LIKE "x";
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | XYZ   | X       | 8899098998 |   101 |
+| 2      | ABC   | x       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> delete from customer
+    -> where address LIKE "x";
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+3 rows in set (0.00 sec)
+
+
+mysql> delete from customer;
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from customer;
+Empty set (0.00 sec)
+
+mysql> insert into customer(custid,cname,address,contactno,pcode)
+    -> values(1,"abc","X",8984884898,101),
+    ->  (2,"ABC","Y",988990090,201),
+    -> (3,"xyz","Z",8899890098,301),
+    -> (4,"XYZ","C",9989800980,401),
+    -> (5,"C","xyz",9988990990,501);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> ORDER BY contactno;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 5      | C     | xyz     | 9988990990 |   501 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> ORDER BY pcode DESC;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 5      | C     | xyz     | 9988990990 |   501 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 1      | abc   | X       | 8984884898 |   101 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> ORDER BY cname ASC;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 5      | C     | xyz     | 9988990990 |   501 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> ORDER BY cname, address;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 5      | C     | xyz     | 9988990990 |   501 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> ORDER BY cname ASC, address DESC;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 1      | abc   | X       | 8984884898 |   101 |
+| 5      | C     | xyz     | 9988990990 |   501 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select COUNT(custid), address
+    -> from customer
+    -> GROUP BY address;
++---------------+---------+
+| COUNT(custid) | address |
++---------------+---------+
+|             1 | X       |
+|             1 | Y       |
+|             1 | Z       |
+|             1 | C       |
+|             1 | xyz     |
++---------------+---------+
+5 rows in set (0.02 sec)
+
+mysql> select COUNT(pcode), address
+    -> from customer
+    -> GROUP BY address
+    -> ORDER BY COUNT(pcode) DESC;
++--------------+---------+
+| COUNT(pcode) | address |
++--------------+---------+
+|            1 | X       |
+|            1 | Y       |
+|            1 | Z       |
+|            1 | C       |
+|            1 | xyz     |
++--------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname BETWEEN "abc" AND "xyz"
+    -> ORDER BY pcode;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customer
+    -> where cname NOT BETWEEN "abc" AND "xyz"
+    -> ORDER BY pcode;
+Empty set (0.00 sec)
+
+mysql> select * from customer;
++--------+-------+---------+------------+-------+
+| custid | cname | address | contactno  | pcode |
++--------+-------+---------+------------+-------+
+| 1      | abc   | X       | 8984884898 |   101 |
+| 2      | ABC   | Y       | 988990090  |   201 |
+| 3      | xyz   | Z       | 8899890098 |   301 |
+| 4      | XYZ   | C       | 9989800980 |   401 |
+| 5      | C     | xyz     | 9988990990 |   501 |
++--------+-------+---------+------------+-------+
+5 rows in set (0.00 sec)
+
+
+
